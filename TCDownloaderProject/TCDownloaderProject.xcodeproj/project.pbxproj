@@ -15,6 +15,7 @@
 		729F3DEF1EADD1F800762FB4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 729F3DED1EADD1F800762FB4 /* LaunchScreen.storyboard */; };
 		729F3DFA1EADD1F800762FB4 /* TCDownloaderProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3DF91EADD1F800762FB4 /* TCDownloaderProjectTests.m */; };
 		729F3E051EADD1F800762FB4 /* TCDownloaderProjectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E041EADD1F800762FB4 /* TCDownloaderProjectUITests.m */; };
+		729F3E151EADD54B00762FB4 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E141EADD54B00762FB4 /* Person.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		729F3E001EADD1F800762FB4 /* TCDownloaderProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCDownloaderProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		729F3E041EADD1F800762FB4 /* TCDownloaderProjectUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCDownloaderProjectUITests.m; sourceTree = "<group>"; };
 		729F3E061EADD1F800762FB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		729F3E131EADD54B00762FB4 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		729F3E141EADD54B00762FB4 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +147,8 @@
 		729F3E121EADD22700762FB4 /* TCDownloader */ = {
 			isa = PBXGroup;
 			children = (
+				729F3E131EADD54B00762FB4 /* Person.h */,
+				729F3E141EADD54B00762FB4 /* Person.m */,
 			);
 			path = TCDownloader;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 			files = (
 				729F3DE71EADD1F800762FB4 /* ViewController.m in Sources */,
 				729F3DE41EADD1F800762FB4 /* AppDelegate.m in Sources */,
+				729F3E151EADD54B00762FB4 /* Person.m in Sources */,
 				729F3DE11EADD1F800762FB4 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
