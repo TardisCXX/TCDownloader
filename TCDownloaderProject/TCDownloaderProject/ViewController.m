@@ -7,9 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "Person.h"
+#import "TCDownloader.h"
 
 @interface ViewController ()
+
+@property (nonatomic,strong) TCDownloader *downloader;
+@property (nonatomic,strong) NSTimer *timer;
 
 @end
 
@@ -19,16 +22,70 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    Person *p = [[Person alloc] init];
-    p.name = @"xiaowang";
-    [p eat];
+    //    [self timer];
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - UI
+
+
+#pragma mark - networking method
+
+
+#pragma mark - action
+
+//- (void)update {
+//    NSLog(@"下载器状态：%ld", (long)self.downloader.state);
+//}
+
+- (IBAction)download:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"http://free2.macx.cn:8281/tools/photo/Sip44.dmg"];
+    //    [self.downloader setDownloadStateChangedBlock:^(TCDownloaderState state){
+    //        NSLog(@"state:%zd", state);
+    //    }];
+    
+    self.downloader.downloadStateChangedBlock = ^(TCDownloaderState state) {
+        NSLog(@"state:%zd", state);
+    };
+    
+    [self.downloader downloadWithURL:url];
 }
 
+- (IBAction)pause:(id)sender {
+    [self.downloader pause];
+    
+}
+
+- (IBAction)resume:(id)sender {
+    [self.downloader resume];
+}
+
+- (IBAction)cancel:(id)sender {
+    [self.downloader cancel];
+}
+
+#pragma mark - private
+
+
+#pragma mark - setter
+
+
+#pragma mark - getter
+
+- (TCDownloader *)downloader {
+    if (!_downloader) {
+        _downloader = [[TCDownloader alloc] init];
+    }
+    
+    return _downloader;
+}
+
+- (NSTimer *)timer {
+    if (!_timer) {
+        _timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(update) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }
+    return _timer;
+}
 
 @end
