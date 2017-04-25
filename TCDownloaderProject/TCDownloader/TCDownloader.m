@@ -52,7 +52,7 @@
 }
 
 - (void)resume {
-    if (self.task && self.state == TCDownloaderStatePause) {
+    if ((self.task && self.state == TCDownloaderStatePause) || self.state == TCDownloaderStateFailure) {
         [self.task resume];
         self.state = TCDownloaderStateDownloading;
     }
@@ -64,7 +64,7 @@
     [TCFileTool removeFileAtPath:self.downloadingFilePath];
 }
 
-
+/// 下载方法内部，涵盖了继续下载的动作
 - (void)downloadWithURL:(NSURL *)url {
     // 容错处理，判断任务是否已经存在
     if ([url isEqual:self.task.originalRequest.URL]) {
@@ -82,13 +82,8 @@
             NSLog(@"告知外界，下载完成");
             return;
         }
-        
-//        if (self.state == TCDownloaderStateUnknow) {
-//            NSLog(@"未知");
-//            return;
-//        }
-        
     }
+    
     // 状态为TCDownloaderStateFailure就走以下下载代码
     
     // 0. 存储机制
@@ -102,6 +97,11 @@
     // 1.2 下载完成的路径和临时下载的文件路径分离
     if ([TCFileTool fileExistsAtPath:self.downloadedFilePath]) {
         NSLog(@"当前资源已经下载完毕");
+        
+        if (self.downloadSuccessBlock) {
+            self.downloadSuccessBlock(self.downloadedFilePath);
+        }
+        
         return;
     }
     
@@ -117,37 +117,20 @@
     // 2.2.1 ls < rs => 直接接着下载ls
     // 2.2.2 ls == rs => 移动到下载完成文件夹
     // 2.2.3 ls > rs => 删除本地临时缓存，从0开始下载
+    // 取消所有下载操作
+    [self cancel];
     _fileTmpSize = [TCFileTool fileSizeAtPath:self.downloadingFilePath];
     [self downloadWithURL:url offset:_fileTmpSize];
+}
+
+- (void)downloadWithURL:(NSURL *)url message:(TCDownloadMessageBlock)messageBlock progress:(TCDownloadProgressBlock)progressBlock success:(TCDownloadSuccessBlock)successBlock failure:(TCDownloadFailureBlock)failureBlock {
+    self.downloadMessageBlock = messageBlock;
+    self.downloadProgressBlock = progressBlock;
+    self.downloadSuccessBlock = successBlock;
+    self.downloadFailureBlock = failureBlock;
     
-    // 发送网络请求
-    // 此处只需要请求头信息
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    request.HTTPMethod = @"HEAD";
-//    NSURLResponse *response = nil;
-//    NSError *error = nil;
-//    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-//    if (error) {
-//        NSLog(@"请求错误");
-//        return;
-//    }
-    
-    /*
-     { status code: 200, headers {
-     "Accept-Ranges" = bytes;
-     Connection = close;
-     "Content-Length" = 21574062;
-     "Content-Type" = ".dmg";
-     Date = "Fri, 17 Mar 2017 06:22:09 GMT";
-     Etag = "\"05f10628d1dd21:23be\"";
-     "Last-Modified" = "Mon, 03 Oct 2016 15:47:02 GMT";
-     Server = "Microsoft-IIS/6.0";
-     } }
-     */
-//    NSLog(@"%@", response);
-    
-    
-    
+    // 执行下载
+    [self downloadWithURL:url];
 }
 
 #pragma mark - action
@@ -197,6 +180,10 @@
         [TCFileTool moveFileFromPath:self.downloadingFilePath toPath:self.downloadedFilePath];
         completionHandler(NSURLSessionResponseCancel);
         
+        if (self.downloadSuccessBlock) {
+            self.downloadSuccessBlock(self.downloadedFilePath);
+        }
+        
         return;
     }
     
@@ -212,8 +199,12 @@
         return;
     }
     
+    if (self.downloadMessageBlock) {
+        self.downloadMessageBlock(_totalSize, self.downloadedFilePath);
+    }
+    
     // _fileTmpSize < totalSize
-    NSLog(@"继续接收数据");
+    // NSLog(@"继续接收数据");
     
     // 创建文件输出流
     // append 意思是是否是以追加的形式
@@ -238,6 +229,11 @@
     NSLog(@"在接收数据");
     // 追加临时文件大小
     _fileTmpSize += data.length;
+    
+    if (self.downloadProgressBlock) {
+        self.downloadProgressBlock((float)_fileTmpSize / _totalSize);
+    }
+    
     [self.stream write:data.bytes maxLength:data.length];
 }
 
@@ -258,21 +254,21 @@
         if (_fileTmpSize == _totalSize) {
             // 移动文件夹
             [TCFileTool moveFileFromPath:self.downloadingFilePath toPath:self.downloadedFilePath];
+            self.state = TCDownloaderStateSuccess;
         }
     } else {
         NSLog(@"有错误--%@ ---code:%zd", error, error.code);
+        self.state = TCDownloaderStateFailure;
+        
+        if (self.downloadFailureBlock) {
+            self.downloadFailureBlock(error.localizedDescription);
+        }
     }
-    
-    self.state = TCDownloaderStateFailure;
-    
 }
 
 #pragma mark - setter
 
 - (void)setState:(TCDownloaderState)state {
-//    if (_state == state) {
-//        return;
-//    }
     _state = state;
     
     if (self.downloadStateChangedBlock) {

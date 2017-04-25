@@ -40,20 +40,25 @@
 
 - (IBAction)download:(id)sender {
     NSURL *url = [NSURL URLWithString:@"http://free2.macx.cn:8281/tools/photo/Sip44.dmg"];
-    //    [self.downloader setDownloadStateChangedBlock:^(TCDownloaderState state){
-    //        NSLog(@"state:%zd", state);
-    //    }];
     
     self.downloader.downloadStateChangedBlock = ^(TCDownloaderState state) {
-        NSLog(@"state:%zd", state);
+        NSLog(@"下载状态：%zd", state);
     };
     
-    [self.downloader downloadWithURL:url];
+    [self.downloader downloadWithURL:url message:^(long long totalSize, NSString *downloadedPath) {
+        NSLog(@"下载文件总大小:%lld,下载路径:%@", totalSize, downloadedPath);
+    } progress:^(float progress) {
+        NSLog(@"下载进度:%f", progress);
+    } success:^(NSString *downloadedPath) {
+        NSLog(@"下载成功");
+    } failure:^(NSString *errMsg) {
+        NSLog(@"下载失败:%@", errMsg);
+    }];
+    
 }
 
 - (IBAction)pause:(id)sender {
     [self.downloader pause];
-    
 }
 
 - (IBAction)resume:(id)sender {
