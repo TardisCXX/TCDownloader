@@ -17,6 +17,8 @@
 		729F3E051EADD1F800762FB4 /* TCDownloaderProjectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E041EADD1F800762FB4 /* TCDownloaderProjectUITests.m */; };
 		729F3E591EADEAFA00762FB4 /* TCDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E561EADEAFA00762FB4 /* TCDownloader.m */; };
 		729F3E5A1EADEAFA00762FB4 /* TCFileTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E581EADEAFA00762FB4 /* TCFileTool.m */; };
+		729F3E5D1EAF271F00762FB4 /* TCDownloaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E5C1EAF271F00762FB4 /* TCDownloaderManager.m */; };
+		729F3E601EAF3F5700762FB4 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 729F3E5F1EAF3F5700762FB4 /* NSString+MD5.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,10 @@
 		729F3E561EADEAFA00762FB4 /* TCDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCDownloader.m; sourceTree = "<group>"; };
 		729F3E571EADEAFA00762FB4 /* TCFileTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCFileTool.h; sourceTree = "<group>"; };
 		729F3E581EADEAFA00762FB4 /* TCFileTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCFileTool.m; sourceTree = "<group>"; };
+		729F3E5B1EAF271F00762FB4 /* TCDownloaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCDownloaderManager.h; sourceTree = "<group>"; };
+		729F3E5C1EAF271F00762FB4 /* TCDownloaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCDownloaderManager.m; sourceTree = "<group>"; };
+		729F3E5E1EAF3F5700762FB4 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		729F3E5F1EAF3F5700762FB4 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +160,10 @@
 				729F3E561EADEAFA00762FB4 /* TCDownloader.m */,
 				729F3E571EADEAFA00762FB4 /* TCFileTool.h */,
 				729F3E581EADEAFA00762FB4 /* TCFileTool.m */,
+				729F3E5B1EAF271F00762FB4 /* TCDownloaderManager.h */,
+				729F3E5C1EAF271F00762FB4 /* TCDownloaderManager.m */,
+				729F3E5E1EAF3F5700762FB4 /* NSString+MD5.h */,
+				729F3E5F1EAF3F5700762FB4 /* NSString+MD5.m */,
 			);
 			path = TCDownloader;
 			sourceTree = "<group>";
@@ -220,6 +230,7 @@
 		729F3DD41EADD1F800762FB4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = TC;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = tardis;
 				TargetAttributes = {
@@ -294,8 +305,10 @@
 				729F3DE71EADD1F800762FB4 /* ViewController.m in Sources */,
 				729F3DE41EADD1F800762FB4 /* AppDelegate.m in Sources */,
 				729F3E5A1EADEAFA00762FB4 /* TCFileTool.m in Sources */,
+				729F3E5D1EAF271F00762FB4 /* TCDownloaderManager.m in Sources */,
 				729F3E591EADEAFA00762FB4 /* TCDownloader.m in Sources */,
 				729F3DE11EADD1F800762FB4 /* main.m in Sources */,
+				729F3E601EAF3F5700762FB4 /* NSString+MD5.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

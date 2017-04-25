@@ -66,6 +66,12 @@
 
 /// 下载方法内部，涵盖了继续下载的动作
 - (void)downloadWithURL:(NSURL *)url {
+    // 0. 存储机制
+    // 下载完成 cache/downloader/downloaded/url.lastCompent
+    // 下载中 cache/downloader/downloading/url.lastCompent
+    self.downloadedFilePath = [self.downloadedPath stringByAppendingPathComponent:url.lastPathComponent];
+    self.downloadingFilePath = [self.downloadingPath stringByAppendingPathComponent:url.lastPathComponent];
+    
     // 容错处理，判断任务是否已经存在
     if ([url isEqual:self.task.originalRequest.URL]) {
         // 任务存在，判断下载状态
@@ -80,17 +86,16 @@
         
         if (self.state == TCDownloaderStateSuccess) {
             NSLog(@"告知外界，下载完成");
+            
+            if (self.downloadSuccessBlock) {
+                self.downloadSuccessBlock(self.downloadedFilePath);
+            }
             return;
         }
     }
     
     // 状态为TCDownloaderStateFailure就走以下下载代码
-    
-    // 0. 存储机制
-    // 下载完成 cache/downloader/downloaded/url.lastCompent
-    // 下载中 cache/downloader/downloading/url.lastCompent
-    self.downloadedFilePath = [self.downloadedPath stringByAppendingPathComponent:url.lastPathComponent];
-    self.downloadingFilePath = [self.downloadingPath stringByAppendingPathComponent:url.lastPathComponent];
+
     
     // 1. 判断当前url对应的资源是否已经下载完毕，如果已经下载完毕，直接返回
     // 1.1 通过一些辅助信息，去记录哪些文件已经下载完毕（额外维护信息文件）
@@ -226,7 +231,6 @@
  @param data        接收到的数据，一段
  */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    NSLog(@"在接收数据");
     // 追加临时文件大小
     _fileTmpSize += data.length;
     
@@ -255,6 +259,10 @@
             // 移动文件夹
             [TCFileTool moveFileFromPath:self.downloadingFilePath toPath:self.downloadedFilePath];
             self.state = TCDownloaderStateSuccess;
+            
+            if (self.downloadSuccessBlock) {
+                self.downloadSuccessBlock(self.downloadedFilePath);
+            }
         }
     } else {
         NSLog(@"有错误--%@ ---code:%zd", error, error.code);
