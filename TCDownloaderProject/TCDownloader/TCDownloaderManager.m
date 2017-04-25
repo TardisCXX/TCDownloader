@@ -87,9 +87,28 @@ static TCDownloaderManager *instance;
     [downloader pause];
 }
 
-- (void)pauseAll {
-    [self.downloadInfo.allValues performSelector:@selector(pause) withObject:nil withObject:nil];
+- (void)resumeWithUrl:(NSURL *)url {
+    TCDownloader *downloader = [self getDownloaderWithUrl:url];
+    [downloader resume];
 }
+
+- (void)cancelWithUrl:(NSURL *)url {
+    TCDownloader *downloader = [self getDownloaderWithUrl:url];
+    [downloader cancel];
+}
+
+- (void)pauseAll {
+    [self.downloadInfo.allValues performSelector:@selector(pause) withObject:nil];
+}
+
+- (void)resumeAll {
+    [self.downloadInfo.allValues performSelector:@selector(resume) withObject:nil];
+}
+
+- (void)cancelAll {
+    [self.downloadInfo.allValues performSelector:@selector(cancel) withObject:nil];
+}
+
 
 
 #pragma mark - private
