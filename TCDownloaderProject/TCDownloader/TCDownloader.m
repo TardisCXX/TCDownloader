@@ -2,8 +2,8 @@
 //  TCDownloader.m
 //  TCDownloaderDemo
 //
-//  Created by TARDIS on 2017-3-15.
-//  Copyright © 2017年 tardis. All rights reserved.
+//  Created by TARDIS on 2015-3-15.
+//  Copyright © 2015年 tardis. All rights reserved.
 //
 
 #import "TCDownloader.h"
@@ -20,12 +20,15 @@
     
 }
 
+/// 下载完成后转移文件的路径
 @property (nonatomic,copy) NSString *downloadedFilePath;
+/// 下载时接收文件路径
 @property (nonatomic,copy) NSString *downloadingFilePath;
-
+/// session
 @property (nonatomic,strong) NSURLSession *session;
+/// 输出流
 @property (nonatomic,strong) NSOutputStream *stream;
-
+/// 任务
 @property (nonatomic,weak) NSURLSessionDataTask *task;
 
 

@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-//#import "TCDownloader.h"
 #import "TCDownloaderManager.h"
 
 @interface ViewController ()
@@ -40,6 +39,7 @@
 //}
 
 - (IBAction)download:(id)sender {
+    // 测试URL
     NSURL *url = [NSURL URLWithString:@"http://free2.macx.cn:8281/tools/photo/Sip44.dmg"];
     
     self.downloader.downloadStateChangedBlock = ^(TCDownloaderState state) {
@@ -73,12 +73,6 @@
 - (IBAction)cancel:(id)sender {
     [self.downloader cancel];
 }
-
-#pragma mark - private
-
-
-#pragma mark - setter
-
 
 #pragma mark - getter
 
