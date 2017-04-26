@@ -22,6 +22,12 @@
 /// 删除path下的文件
 + (void)removeFileAtPath:(NSString *)path;
 
+/**
+ 转移文件
+
+ @param fromPath    原文件路径
+ @param toPath      目标路径
+ */
 + (void)moveFileFromPath:(NSString *)fromPath toPath:(NSString *)toPath;
 
 @end

@@ -10,6 +10,7 @@
 
 @interface NSString (MD5)
 
+/// 对当前字符串MD5编码
 - (NSString *)md5String;
 
 @end

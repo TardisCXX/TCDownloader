@@ -41,7 +41,6 @@ typedef void(^TCDownloadFailureBlock)(NSString *errMsg);
 /// 给定一个URL就可以下载
 - (void)downloadWithURL:(NSURL *)url;
 
-
 /**
  给定一个URL进行下载，并获得下载信息回调
 

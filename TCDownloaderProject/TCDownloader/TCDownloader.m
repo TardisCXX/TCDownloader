@@ -51,7 +51,6 @@
         [self.task suspend];
         self.state = TCDownloaderStatePause;
     }
-    
 }
 
 - (void)resume {
@@ -59,7 +58,6 @@
         [self.task resume];
         self.state = TCDownloaderStateDownloading;
     }
-    
 }
 
 - (void)cancelAndClean {
@@ -70,6 +68,7 @@
 /// 下载方法内部，涵盖了继续下载的动作
 - (void)downloadWithURL:(NSURL *)url {
     // 0. 存储机制
+    // 正式使用时，下载中的 路径 应该放在沙盒tmp路径下
     // 下载完成 cache/downloader/downloaded/url.lastCompent
     // 下载中 cache/downloader/downloading/url.lastCompent
     self.downloadedFilePath = [self.downloadedPath stringByAppendingPathComponent:url.lastPathComponent];
@@ -120,11 +119,6 @@
         return;
     }
     
-    // 当使用NSURLSession时 判断放在了其代理里面
-    // 2.2 获取本地缓存的大小ls ：文件真正正确的总大小rs
-    // 2.2.1 ls < rs => 直接接着下载ls
-    // 2.2.2 ls == rs => 移动到下载完成文件夹
-    // 2.2.3 ls > rs => 删除本地临时缓存，从0开始下载
     // 取消所有下载操作
     [self cancel];
     _fileTmpSize = [TCFileTool fileSizeAtPath:self.downloadingFilePath];
@@ -141,10 +135,6 @@
     [self downloadWithURL:url];
 }
 
-#pragma mark - action
-
-
-
 #pragma mark - private
 
 /// 从偏移量offset处开始继续下载
@@ -152,7 +142,6 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:0]; // 0表示不限时间，如果有时间，那么就是在这个时间内下载，否则就没了
     [request setValue:[NSString stringWithFormat:@"bytes=%lld-", offset] forHTTPHeaderField:@"Range"];
     self.task = [self.session dataTaskWithRequest:request];
-//    [self.task resume];
     [self resume];
 }
 
@@ -318,7 +307,5 @@
     
     return _session;
 }
-
-
 
 @end

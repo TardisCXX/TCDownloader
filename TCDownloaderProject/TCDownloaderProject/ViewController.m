@@ -63,15 +63,15 @@
 }
 
 - (IBAction)pause:(id)sender {
-    [self.downloader pause];
+    [[TCDownloaderManager sharedManager] pauseAll];
 }
 
 - (IBAction)resume:(id)sender {
-    [self.downloader resume];
+    [[TCDownloaderManager sharedManager] resumeAll];
 }
 
 - (IBAction)cancel:(id)sender {
-    [self.downloader cancel];
+    [[TCDownloaderManager sharedManager] cancelAll];
 }
 
 #pragma mark - getter
