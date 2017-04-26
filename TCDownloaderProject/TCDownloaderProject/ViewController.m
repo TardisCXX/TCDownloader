@@ -64,6 +64,8 @@
 
 - (IBAction)pause:(id)sender {
     [[TCDownloaderManager sharedManager] pauseAll];
+    // 或
+    // [[TCDownloaderManager sharedManager] pauseWithUrl:url];
 }
 
 - (IBAction)resume:(id)sender {
